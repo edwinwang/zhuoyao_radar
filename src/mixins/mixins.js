@@ -150,7 +150,7 @@ module.exports = {
     getVersionFileName(name) {
       if (name != this.currVersion) {
         this.getYaolings(name);
-        console.info('有新版本的icon!');
+        console.info('有新版本的icon!', name);
         this.notify('有新版本的妖灵库，请通知作者更新！！');
       } else {
         this.getYaolings(this.currVersion);
@@ -173,8 +173,8 @@ module.exports = {
               reject(error);
             },
             {
-              enableHighAccuracy: true, //是否要求高精度的地理位置信息
-              timeout: 10 * 1000, //对地理位置信息的获取操作做超时限制，如果再该事件内未获取到地理位置信息，将返回错误
+              enableHighAccuracy: false, //是否要求高精度的地理位置信息
+              timeout: 30 * 1000, //对地理位置信息的获取操作做超时限制，如果再该事件内未获取到地理位置信息，将返回错误
               maximumAge: 60 * 1000 //设置缓存有效时间，在该时间段内，获取的地理位置信息还是设置此时间段之前的那次获得的信息，超过这段时间缓存的位置信息会被废弃
             }
           );

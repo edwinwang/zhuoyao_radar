@@ -1,7 +1,7 @@
 import tempdata from './tempdata';
 import availableYaolings from './availableYaolings';
 
-const CUR_YAOLING_VERSION = 'sprite_736ccf43e1837de040108c29c00019d0.json'; // 妖灵数据库版本，如果与官方版本不一致，需要手动更新
+const CUR_YAOLING_VERSION = 'sprite_18b3306a1d7dda37b41d2d458e00a0a8.json'; // 妖灵数据库版本，如果与官方版本不一致，需要手动更新
 //本地妖灵数据库更新时间:"2019-05-25 13:09:00"
 
 const APP_VERSION = 'v1.5.0'; // 地图版本
@@ -116,8 +116,8 @@ const FILTER = {
 
 const SOCKET = {
   MAX_RECONNECT_TIME: 10, // 断线重连次数
-  MSG_INTERVAL: 5000, // 发送消息最小时间间隔
-  RECONNECT_TIMEOUT: 1000, // 断线重连时间
+  MSG_INTERVAL: 3000, // 发送消息最小时间间隔
+  RECONNECT_TIMEOUT: 3000, // 断线重连时间
   URL:
     'wss://publicld.gwgo.qq.com?account_value=0&account_type=1&appid=0&token=0' // 官方妖灵查询接口
 };
@@ -130,8 +130,8 @@ const BOT = {
 // MAX_RANGE: 以查询点为基准，范围查询的单元格数量
 // 例如MAX_RANGE=10。即是基准东南西北各+10，再加中心线，21*21的单元格数
 const WIDE_SEARCH = {
-  MAX_RANGE: 10, 
-  MAX_SOCKETS: 6, // 最大socket线程数
+  MAX_RANGE: 7, 
+  MAX_SOCKETS: 4, // 最大socket线程数
   LAT_RANGE: 0.013754, // 单次查询纬度偏移量
   LNG_RANGE: 0.01795 // 单词查询经度偏移量
 };
