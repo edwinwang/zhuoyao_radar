@@ -5,6 +5,7 @@
  */
 
 import { setLocalStorage } from '../lib/util';
+import RadarMapMarker from '../lib/RadarMapMarker';
 import {
   MAP_PARAMS,
   WIDE_SEARCH
@@ -12,22 +13,7 @@ import {
 
 module.exports = {
   methods: {
-    // exportPosition: function() {
-    //   var pos = this.$prompt('请输入标签', '缓存位置', {
-    //     confirmButtonText: '确定',
-    //     cancelButtonText: '取消',
-    //     inputValidator: value => {
-    //       if (value.length == 0) return '请输入标签';
-    //       return true;
-    //     }
-    //   }).then(({ value }) => {
-    //     this.$message({
-    //       type: 'success',
-    //       message: '你的邮箱是: ' + value
-    //     });
-    //   });
-    // },
-    // importPosition: function() {},
+
     /**
      * 初始化地图
      */
@@ -44,21 +30,21 @@ module.exports = {
         mapTypeControl: false,
         scrollwheel: true,
         draggable: true,
-        zoom: 16 // 地图的中心地理坐标。
+        zoom: this.location.zoom ? this.location.zoom : 16, 
       });
 
       qq.maps.event.addListener(this.map, 'click', this.clickMap);
       qq.maps.event.addListener(
         this.map,
-        'center_changed',
-        this.mapCenterChanged
+        'bounds_changed',
+        this.mapChanged
       );
     },
     /**
      * 地图点击事件
      */
     clickMap(e) {
-      if (this.mode === 'wide' && this.searching) {
+      if ((this.mode === 'wide' || this.mode === 'temp') && this.searching) {
         return false;
       }
       if (!this.settings.auto_search) this.notify('位置已重置,请重新筛选');
@@ -91,12 +77,17 @@ module.exports = {
      * 根据妖灵信息在地图上打个标记
      */
     addMarkers(yl) {
+
+      var key = window.md5(yl.gentime.toString()+yl.latitude.toString()+yl.longtitude.toString());
+
+      if (this.markers.has(key)) return; //重复妖灵不添加
+
       let headImage = this.getHeadImagePath(yl);
 
       var time = new Date((yl.gentime + yl.lifetime) * 1000) - new Date();
       var second = time / 1000;
       var minute = Math.floor(second / 60);
-      var second = Math.floor(second % 60);
+      second = Math.floor(second % 60);
 
       var fintime = minute + '分' + second + '秒';
 
@@ -117,7 +108,13 @@ module.exports = {
       });
 
       marker.setIcon(icon);
-      this.markers.push(marker);
+      
+      let markeropts = {
+        marker:marker,
+        laberMarker:null,
+        time:new Date((yl.gentime + yl.lifetime) * 1000),
+      };
+      
 
       // 展示倒计时
       if (this.settings.show_time) {
@@ -132,8 +129,10 @@ module.exports = {
           },
           zIndex:22000,
         });
-        this.markers.push(labelMarker);
+        markeropts.labelMarker = labelMarker;
       }
+
+      this.markers[key] = new RadarMapMarker(markeropts);
     },
     buildSearchboxMarker(lat,lng,showOuter) {
       if (!this.settings.show_box) return;
@@ -175,20 +174,15 @@ module.exports = {
         fillColor:MAP_PARAMS.BOX_FILL,
         zIndex:6000,
       }));
-
-      
-
-      
-
     },
     /**
      * 清除标记
      */
     clearAllMarkers() {
-      for (var i = 0; i < this.markers.length; i++) {
-        this.markers[i].setMap(null);
+      for (var key in this.markers) {
+        this.markers[key].clear();
       }
-      this.markers = [];
+      this.markers.clear();
     },
     /**
      * 清除搜索框
@@ -214,11 +208,13 @@ module.exports = {
     /**
      * 地图中心改变
      */
-    mapCenterChanged(position) {
+    mapChanged(position) {
       var c = this.map.getCenter();
+      var z = this.map.getZoom();
       setLocalStorage('radar_location', {
         longitude: c.lng,
-        latitude: c.lat
+        latitude: c.lat,
+        zoom: z
       });
     }
   }
