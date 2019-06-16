@@ -24,7 +24,9 @@ import {
   Input,
   Collapse,
   Checkbox,
-  CollapseItem
+  CollapseItem,
+  Table,
+  TableColumn,
 } from 'element-ui';
 import './index.less';
 import 'element-ui/lib/theme-chalk/button.css';
@@ -55,6 +57,8 @@ Vue.use(Dialog);
 Vue.use(Row);
 Vue.use(Col);
 Vue.use(Checkbox);
+Vue.use(Table);
+Vue.use(TableColumn);
 
 let getParameter = (name, loca = window.location.href) => {
   const regexS = `[\\?&]${name}=([^&#]*)`;

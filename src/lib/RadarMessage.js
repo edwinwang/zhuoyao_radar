@@ -9,7 +9,7 @@ class RadarMessage {
             wide: false, //是否为大范围查询
             groupId:null, //群组搜索id
             id:null, //message id
-            maxTimeout: 3000, //超时无回应时间
+            maxTimeout: 5000, //超时无回应时间
             lng:null,
             lat:null,
         };

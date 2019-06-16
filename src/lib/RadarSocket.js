@@ -11,7 +11,7 @@ class RadarWebSocket {
         'wss://publicld.gwgo.qq.com?account_value=0&account_type=0&appid=0&token=0',
       maxReconnectTime: 60, // 断线重连次数
       reconnectTimeout: 1000, // 断线重连时间
-      maxTimeout: 2000, //超时未回复重连时间
+      maxTimeout: 10000, //超时未回复重连时间
       index: 0, // socket标识
       onopen: () => {},
       onclose: () => {},
@@ -63,16 +63,20 @@ class RadarWebSocket {
       if (typeof (event.data) !== 'string')
         this.timer && clearTimeout(this.timer);
     };
+    this.socket.onerror = error =>{
+      console.error(error)
+    }
   }
   /**
    * 发送消息
    * @param {*} msg
    */
   send(msg) {
-    console.log("new send");
+    console.log("new send", this.opts.maxTimeout);
     this.socket && this.socket.send(msg);
     this.timer = setTimeout(() => {
       // 3000ms内没响应就主动关闭并重连 
+      console.log("close socket manual----")
       this.manual_close = true;
       this.socket.close();
     }, this.opts.maxTimeout);

@@ -16,7 +16,7 @@ module.exports = {
 
       //let max = this.mode === 'normal' ? 1 : this.thread;
       let max = this.thread;
-      let maxTimeout = this.mode === 'temp' ? 1000 : 3000;
+      let maxTimeout = this.mode === 'temp' ? 1000 : 1000;
       for (let index = 0; index < max; index++) {
         let socket = new RadarWebSocket({
           url: SOCKET.URL,
@@ -180,7 +180,6 @@ module.exports = {
         message.longtitude = convertLocation(message.longitude);
         delete message.longitude;
       }
-
       return message;
     }
   }
