@@ -18,7 +18,7 @@ lifetime: 3600
 longtitude: 120086050
 sprite_id: 2000324 -->
       <div class="side-nav" v-show="showMenu">
-        <el-table :data="tableData" max-height="800">
+        <el-table ref="table" :data="tableData" :height="tableHeight">
           <el-table-column label="妖灵">
             <template slot-scope="scope">
               {{monsterName[scope.row.sprite_id] || scope.row.sprite_id}}
@@ -61,7 +61,8 @@ export default {
       activeName: "1",
       clipboardBtn: null,
       posVal: '',
-      monsterName: {}
+      monsterName: {},
+      tableHeight: 50
     };
   },
   mounted(){
@@ -69,6 +70,15 @@ export default {
     for (const item of MonsterConfig.Data){
       this.monsterName[item.Id] = item.Name
     }
+    this.$nextTick(function () {
+            this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 50;
+            
+            // 监听窗口大小变化
+            let self = this;
+            window.onresize = function() {
+                self.tableHeight = window.innerHeight - self.$refs.table.$el.offsetTop - 50
+            }
+        })
   },
   methods: {
     openMenu() {
