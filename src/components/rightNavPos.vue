@@ -87,7 +87,7 @@ export default {
 
     handleCopy(tp, long, la){
       if (tp === 'ios'){
-        this.posVal = (long+6456)/1000000 + ',' + (la+6333)/1000000
+        this.posVal = (long+6756)/1000000 + ',' + (la+6033)/1000000
       } else {
         this.posVal = (la+2074)/1000000 + ',' + (long-4372)/1000000
       }
