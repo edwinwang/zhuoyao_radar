@@ -26,7 +26,7 @@ sprite_id: 2000324 -->
           </el-table-column>
           <el-table-column label="坐标">
             <template slot-scope="scope">
-              <el-button class="btnCopy" :data-clipboard-text="posVal" @click="handleCopy('ios', scope.row.longtitude, scope.row.latitude)">ios</el-button>
+              <el-button class="btnCopy" :type="scope.row.clicked && 'info' || 'primary'" :data-clipboard-text="posVal" @click="handleCopy('ios', scope.row)">ios</el-button>
               <!-- <el-button class="btnCopy" :data-clipboard-text="posVal" @click="handleCopy('android', scope.row.longtitude, scope.row.latitude)">android</el-button> -->
             </template>
           </el-table-column>
@@ -85,7 +85,10 @@ export default {
       this.$emit("update:showMenu", !this.showMenu);
     },
 
-    handleCopy(tp, long, la){
+    handleCopy(tp, row){
+      const long = row.longtitude
+      const la = row.latitude
+      row.clicked = true
       if (tp === 'ios'){
         this.posVal = (long+6756)/1000000 + ',' + (la+6033)/1000000
       } else {
