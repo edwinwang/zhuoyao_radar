@@ -195,7 +195,8 @@ export default {
         latitude: 39.9610780334
       },
       progressShow: false,
-      filterDialogVisible: false
+      filterDialogVisible: false,
+      autoid: 0
     };
   },
   mounted() {
@@ -270,7 +271,10 @@ export default {
             this.fit[0] === "special" ||
             this.fit.indexOf(item.sprite_id) > -1
           ) {
-            this.addMarkers(item);
+            const now = Date.parse(new Date())/1000
+            item.remain = item.gentime + item.lifetime - now
+            item.id = this.autoid++
+            this.addMarkers(item)
             this.posList.push(item)
             console.log(item);
           }

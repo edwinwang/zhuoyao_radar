@@ -18,7 +18,8 @@ lifetime: 3600
 longtitude: 120086050
 sprite_id: 2000324 -->
       <div class="side-nav" v-show="showMenu">
-        <el-table ref="table" :data="tableData" :height="tableHeight">
+        <el-table ref="table" :data="tableData" :height="tableHeight"
+          :default-sort = "{prop: 'remain', order: 'ascending'}">
           <el-table-column label="妖灵">
             <template slot-scope="scope">
               {{monsterName[scope.row.sprite_id] || scope.row.sprite_id}}
@@ -26,15 +27,11 @@ sprite_id: 2000324 -->
           </el-table-column>
           <el-table-column label="坐标">
             <template slot-scope="scope">
-              <el-button class="btnCopy" :type="scope.row.clicked && 'info' || 'primary'" :data-clipboard-text="posVal" @click="handleCopy('ios', scope.row)">ios</el-button>
+              <el-button class="btnCopy" :type="scope.row.clicked && 'info' || 'primary'" :data-clipboard-text="posVal" @click="handleCopy('ios', scope.row, scope)">ios</el-button>
               <!-- <el-button class="btnCopy" :data-clipboard-text="posVal" @click="handleCopy('android', scope.row.longtitude, scope.row.latitude)">android</el-button> -->
             </template>
           </el-table-column>
-          <el-table-column label="时间">
-            <template slot-scope="scope">
-              {{formatRemainTime(scope.row.gentime, scope.row.lifetime)}}
-            </template>
-          </el-table-column>
+          <el-table-column label="时间" prop="remain" :formatter="formatRemainTime"></el-table-column>
         </el-table>
       </div>
     </transition>
@@ -44,6 +41,7 @@ sprite_id: 2000324 -->
 import { getLocalStorage } from "../lib/util"
 import MonsterConfig from "../lib/tempdata"
 import clipboard from 'clipboard'
+import { setInterval } from 'timers';
 export default {
   name: "radar-right-nav-pos",
   props: {
@@ -71,21 +69,36 @@ export default {
       this.monsterName[item.Id] = item.Name
     }
     this.$nextTick(function () {
-            this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 50;
-            
-            // 监听窗口大小变化
-            let self = this;
-            window.onresize = function() {
-                self.tableHeight = window.innerHeight - self.$refs.table.$el.offsetTop - 50
-            }
-        })
+        this.tableHeight = window.innerHeight - this.$refs.table.$el.offsetTop - 50;
+        
+        // 监听窗口大小变化
+        let self = this;
+        window.onresize = function() {
+            self.tableHeight = window.innerHeight - self.$refs.table.$el.offsetTop - 50
+        }
+    })
+    setInterval(this.calcRemainTime, 2000)
   },
   methods: {
     openMenu() {
       this.$emit("update:showMenu", !this.showMenu);
     },
+    calcRemainTime(){
+      //console.log("test-----")
+      for (var item of this.tableData){
+        const now = Date.parse(new Date())/1000
+        item.remain = item.gentime + item.lifetime - now
+      }
+      for (var i=this.tableData.length-1; i>=0; i--){
+        let item = this.tableData[i]
+        if (item.remain<=0){
+          this.tableData.splice(i, 1)
+        }
+      }
 
-    handleCopy(tp, row){
+    },
+    handleCopy(tp, row, scope){
+      //console.error(scope)
       const long = row.longtitude
       const la = row.latitude
       row.clicked = true
@@ -94,12 +107,17 @@ export default {
       } else {
         this.posVal = (la+2074)/1000000 + ',' + (long-4372)/1000000
       }
+      for (var i=0; i<this.tableData.length; i++){
+        let item = this.tableData[i]
+        if (item.id===row.id){
+          this.tableData.splice(i, 1)
+          break
+        }
+      }
       //console.log(tp, long, la, this.posVal)
     },
-    formatRemainTime(gentime, lifetime){
-      const now = Date.parse(new Date())/1000
-      const remain =  gentime + lifetime - now
-      return remain>0 && remain + '秒' || '过期'
+    formatRemainTime(row, column, cellValue, index){
+      return cellValue>0 && cellValue + '秒' || '过期'
     }
   }
 };
