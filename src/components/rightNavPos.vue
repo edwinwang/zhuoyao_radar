@@ -18,8 +18,8 @@ lifetime: 3600
 longtitude: 120086050
 sprite_id: 2000324 -->
       <div class="side-nav" v-show="showMenu">
-        <el-table ref="table" :data="tableData" :height="tableHeight"
-          :default-sort = "{prop: 'remain', order: 'ascending'}">
+        <el-table ref="table" :data="tableData" :height="tableHeight">
+          <!-- :default-sort = "{prop: 'remain', order: 'ascending'}"> -->
           <el-table-column label="妖灵">
             <template slot-scope="scope">
               {{monsterName[scope.row.sprite_id] || scope.row.sprite_id}}
@@ -97,23 +97,32 @@ export default {
       }
 
     },
+    getOffset(){
+      if (this.$parent.lo === 'hz'){
+        return [6456, 6333]
+      }
+      return [6550, 5950]
+    },
     handleCopy(tp, row, scope){
       //console.error(scope)
       const long = row.longtitude
       const la = row.latitude
       row.clicked = true
+      const offset = this.getOffset()
       if (tp === 'ios'){
-        this.posVal = (long+6756)/1000000 + ',' + (la+6033)/1000000
+        this.posVal = (long+offset[0])/1000000 + ',' + (la+offset[1])/1000000
+        //console.log(long+6456, la+6333, this.posVal)
+        console.log(this.$parent)
       } else {
         this.posVal = (la+2074)/1000000 + ',' + (long-4372)/1000000
       }
-      for (var i=0; i<this.tableData.length; i++){
-        let item = this.tableData[i]
-        if (item.id===row.id){
-          this.tableData.splice(i, 1)
-          break
-        }
-      }
+      // for (var i=0; i<this.tableData.length; i++){
+      //   let item = this.tableData[i]
+      //   if (item.id===row.id){
+      //     this.tableData.splice(i, 1)
+      //     break
+      //   }
+      // }
       //console.log(tp, long, la, this.posVal)
     },
     formatRemainTime(row, column, cellValue, index){
