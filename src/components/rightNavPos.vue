@@ -98,8 +98,9 @@ export default {
 
     },
     getOffset(){
+      console.log(this.$parent, this.$parent.lo === 'hz')
       if (this.$parent.lo === 'hz'){
-        return [6456, 6333]
+        return [6456, 6533]
       }
       return [6550, 5950]
     },
@@ -112,7 +113,7 @@ export default {
       if (tp === 'ios'){
         this.posVal = (long+offset[0])/1000000 + ',' + (la+offset[1])/1000000
         //console.log(long+6456, la+6333, this.posVal)
-        console.log(this.$parent)
+        console.log(offset)
       } else {
         this.posVal = (la+2074)/1000000 + ',' + (long-4372)/1000000
       }

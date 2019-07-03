@@ -74,6 +74,8 @@ import {
   WIDE_SEARCH
 } from "./lib/config";
 
+
+
 export default {
   name: "zhuoyao-radar",
   mixins: [mixins, bot, map, socket],
@@ -169,6 +171,7 @@ export default {
       range,
       thread,
       max_range,
+      lo: this.$parent.lo,
       mode: this.$parent.mode,
       sockets: new Array(thread),
       radarTask: null,
