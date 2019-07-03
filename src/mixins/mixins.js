@@ -61,7 +61,8 @@ module.exports = {
     getHeadImagePath(e) {
       var a = this.getYaolingById(e.sprite_id);
       if (a) {
-        return `https://hy.gwgo.qq.com/sync/pet/small/${a.ImgName}.png`;
+        return `https://hy.gwgo.qq.com/sync/pet/${a.SmallImgPath}`;
+        //return `https://hy.gwgo.qq.com/sync/pet/small/${a.ImgName}.png`;
       } else {
         return 'src/assets/images/default-head.png';
       }
