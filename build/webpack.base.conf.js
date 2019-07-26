@@ -112,7 +112,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       env: process.env.NODE_ENV,
       filename:
-        process.env.NODE_ENV === 'development' ? 'index.html' : '../index.html',
+        process.env.NODE_ENV === 'development' ? 'index.html' : '../dist/index.html',
       template: './src/index.html'
     })
   )

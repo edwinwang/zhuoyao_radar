@@ -20,9 +20,9 @@
         <div class="side-header">
           <h4>捉妖雷达 - Web</h4>
           <p>{{ version }}</p>
-          <p><a href="http://note.youdao.com/noteshare?id=cf93745c828b381275f53e5a730eaf96" target="_blank">捉妖雷达开发贡献指引</a></p>
+          <!-- <p><a href="http://note.youdao.com/noteshare?id=cf93745c828b381275f53e5a730eaf96" target="_blank">捉妖雷达开发贡献指引</a></p> -->
           <br>
-          <p>欢迎使用虚拟定位</p>
+          <!-- <p>欢迎使用虚拟定位</p> -->
           <br/>
         </div>
         <div class="side-content">
