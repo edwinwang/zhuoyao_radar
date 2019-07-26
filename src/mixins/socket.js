@@ -57,7 +57,7 @@ module.exports = {
     onSocketOpen: function(event, socket) {
       console.log(`WSS-${socket.index}.连接开启`);
       this.sockets[socket.index] = socket;
-      // 首次连接 不再浪费这次请求，以后手动筛查版本
+      //首次连接 不再浪费这次请求，以后手动筛查版本
       // if (this.firstTime) {
       //   this.firstTime = false;
       //   this.getSettingFileName();

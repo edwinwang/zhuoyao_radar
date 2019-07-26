@@ -101,6 +101,8 @@ export default {
       console.log(this.$parent, this.$parent.lo === 'hz')
       if (this.$parent.lo === 'hz'){
         return [6456, 6533]
+      } else if (this.$parent.lo === 'lasha'){
+        return [9456, 6733]
       }
       return [6550, 5950]
     },

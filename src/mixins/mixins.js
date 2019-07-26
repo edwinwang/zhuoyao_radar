@@ -93,6 +93,7 @@ module.exports = {
 
       switch (msgType) {
         case '10041':
+          console.log("******************", data.filename)
           this.getVersionFileName(data.filename);
           break;
         case '10040':

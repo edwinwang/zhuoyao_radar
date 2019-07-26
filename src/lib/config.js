@@ -1,7 +1,7 @@
 import tempdata from './tempdata';
 import availableYaolings from './availableYaolings';
 
-const CUR_YAOLING_VERSION = 'sprite_1004b07fdb5667fd87d9c11710405173.json'; // 妖灵数据库版本，如果与官方版本不一致，需要手动更新
+const CUR_YAOLING_VERSION = 'sprite_ea4be9d10329297100fde09317849482.json'; // 妖灵数据库版本，如果与官方版本不一致，需要手动更新
 //本地妖灵数据库更新时间:"2019-06-14 08:09:00"
 
 const APP_VERSION = 'v1.5.6'; // 地图版本
